@@ -1,6 +1,5 @@
 package io.techforum.refactoring;
 
-import com.ibm.icu.text.RuleBasedNumberFormat;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -12,7 +11,8 @@ public class MyProgram {
 
     public void displayNumbers() {
         try {
-            final List<String> lines = Files.readAllLines(Paths.get(getClass().getResource("/numbers.txt")
+            final List<String> lines = Files.readAllLines(Paths.get(getClass().getResource(
+                    "/numbers.txt")
                                                                               .toURI()));
             for(final String line : lines) {
                 System.out.println(line);
@@ -27,10 +27,11 @@ public class MyProgram {
 
     public void displayRomanNumbers() {
         try {
-            final List<String> lines = Files.readAllLines(Paths.get(getClass().getResource("/numbers.txt")
+            final List<String> lines = Files.readAllLines(Paths.get(getClass().getResource(
+                    "/numbers.txt")
                                                                               .toURI()));
             for(final String line : lines) {
-                System.out.println(RomanNumerals.toRomanNumeral(Integer.parseInt(line)));
+                System.out.println(toRomanNumeral(Integer.parseInt(line)));
             }
         } catch(IOException e) {
             e.printStackTrace();
@@ -40,30 +41,6 @@ public class MyProgram {
     }
 
 
-    public void displayHumanNumbers() {
-        try {
-            final List<String> lines = Files.readAllLines(Paths.get(getClass().getResource("/numbers.txt")
-                                                                              .toURI()));
-            for(final String line : lines) {
-                System.out.println(EnglishNumberToWords.convert(Integer.parseInt(line)));
-            }
-        } catch(IOException e) {
-            e.printStackTrace();
-        } catch(URISyntaxException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    public static void main(String[] args) {
-        new MyProgram().displayNumbers();
-        new MyProgram().displayRomanNumbers();
-        new MyProgram().displayHumanNumbers();
-    }
-
-}
-
-class RomanNumerals {
     public static String toRomanNumeral(int i) {
         String toReturn = baseNumber(i);
 
@@ -108,10 +85,34 @@ class RomanNumerals {
     public static String repeat(String s, int i) {
         String result = "";
         for(int j = 0; j < i; j++) {
-            result.concat(s);
+            result += s;
         }
         return result;
     }
+
+
+    public void displayHumanNumbers() {
+        try {
+            final List<String> lines = Files.readAllLines(Paths.get(getClass().getResource(
+                    "/numbers.txt")
+                                                                              .toURI()));
+            for(final String line : lines) {
+                System.out.println(EnglishNumberToWords.convert(Integer.parseInt(line)));
+            }
+        } catch(IOException e) {
+            e.printStackTrace();
+        } catch(URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void main(String[] args) {
+        new MyProgram().displayNumbers();
+        new MyProgram().displayRomanNumbers();
+        new MyProgram().displayHumanNumbers();
+    }
+
 }
 
 class EnglishNumberToWords {
@@ -250,12 +251,5 @@ class EnglishNumberToWords {
         // remove extra spaces!
         return result.replaceAll("^\\s+", "")
                      .replaceAll("\\b\\s{2,}\\b", " ");
-    }
-}
-
-class HumanNumbers {
-    public static String toHuman(int i) {
-        RuleBasedNumberFormat formatter = new RuleBasedNumberFormat(RuleBasedNumberFormat.SPELLOUT);
-        return formatter.format(i);
     }
 }
