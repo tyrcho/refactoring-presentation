@@ -2,7 +2,6 @@ package io.techforum.refactoring;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import io.techforum.refactoring.rework.RomanNumeralConverter;
 import org.junit.jupiter.api.Test;
 
 public class TestRomanNumeralsConversion {
@@ -29,7 +28,7 @@ public class TestRomanNumeralsConversion {
 
 
     private void check(int number, String expected) {
-        String actual = RomanNumeralConverter.toRomanNumeral(number);
+        String actual = MyBatchProgram.toRomanNumeral(number);
         assertEquals(expected, actual);
     }
 }
