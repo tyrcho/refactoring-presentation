@@ -1,46 +1,74 @@
 package io.techforum.refactoring;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.List;
 
-public class MyProgram {
+public class MyBatchProgram {
 
+    public static void main(String[] args) {
+        new MyBatchProgram().displayNumbers();
+        new MyBatchProgram().displayRomanNumbers();
+        new MyBatchProgram().displayHumanNumbers();
+    }
+
+
+    /**
+     * For displaying the numbers in the file...
+     */
     public void displayNumbers() {
         try {
-            final List<String> lines = Files.readAllLines(Paths.get(getClass().getResource(
-                    "/numbers.txt")
-                                                                              .toURI()));
-            for(final String line : lines) {
+            File f = new File("src/main/resources/numbers.txt");
+            BufferedReader bfr = new BufferedReader(new FileReader(f));
+            String line = bfr.readLine();
+            while(line != null) {
                 System.out.println(line);
+                line = bfr.readLine();
             }
         } catch(IOException e) {
-            e.printStackTrace();
-        } catch(URISyntaxException e) {
             e.printStackTrace();
         }
     }
 
 
+    /**
+     * For displaying the numbers in the file as words...
+     */
+    public void displayHumanNumbers() {
+        try {
+            final List<String> lines = Files.readAllLines(Paths.get("src/main/resources/numbers.txt"));
+            for(final String line : lines) {
+                System.out.println(EnglishNumberToWords.convert(Integer.parseInt(line)));
+            }
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * For displaying the numbers in the file as roman numbers...
+     */
     public void displayRomanNumbers() {
         try {
-            final List<String> lines = Files.readAllLines(Paths.get(getClass().getResource(
-                    "/numbers.txt")
-                                                                              .toURI()));
+            final List<String> lines = Files.readAllLines(Paths.get("src/main/resources/numbers.txt"));
             for(final String line : lines) {
                 System.out.println(toRomanNumeral(Integer.parseInt(line)));
             }
         } catch(IOException e) {
             e.printStackTrace();
-        } catch(URISyntaxException e) {
-            e.printStackTrace();
         }
     }
 
 
+    /**
+     * Conversion to a roman numeral...
+     */
     public static String toRomanNumeral(int i) {
         String toReturn = baseNumber(i);
 
@@ -61,6 +89,7 @@ public class MyProgram {
                 return "XL" + baseNumber(i % 10);
             }
         }
+
         return toReturn;
     }
 
@@ -83,6 +112,7 @@ public class MyProgram {
 
 
     public static String repeat(String s, int i) {
+        //return String.join("", Collections.nCopies(i, s));
         String result = "";
         for(int j = 0; j < i; j++) {
             result += s;
@@ -91,30 +121,13 @@ public class MyProgram {
     }
 
 
-    public void displayHumanNumbers() {
-        try {
-            final List<String> lines = Files.readAllLines(Paths.get(getClass().getResource(
-                    "/numbers.txt")
-                                                                              .toURI()));
-            for(final String line : lines) {
-                System.out.println(EnglishNumberToWords.convert(Integer.parseInt(line)));
-            }
-        } catch(IOException e) {
-            e.printStackTrace();
-        } catch(URISyntaxException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    public static void main(String[] args) {
-        new MyProgram().displayNumbers();
-        new MyProgram().displayRomanNumbers();
-        new MyProgram().displayHumanNumbers();
-    }
-
 }
 
+/**
+ * Proud copy pasting of https://stackoverflow.com/questions/3911966/how-to-convert-number-to-words-in-java
+ * without even reading the code.
+ * Cause why not.
+ */
 class EnglishNumberToWords {
 
     private static final String[] tensNames = {

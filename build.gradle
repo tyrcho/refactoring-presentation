@@ -6,10 +6,17 @@ repositories {
     mavenCentral()
 }
 
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
 dependencies {
     compile 'io.vavr:vavr:0.9.0'
     compile 'icu4j:icu4j:2.6.1'
-    testCompile "org.junit.jupiter:junit-jupiter-api:5.0.0-M4"
-    testRuntime "org.junit.jupiter:junit-jupiter-engine:5.0.0-M4"
+    testCompile 'org.junit.jupiter:junit-jupiter-api:5.0.0-M4'
+    testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.0.0-M4'
     testCompile 'org.assertj:assertj-core:3.7.0'
 }
