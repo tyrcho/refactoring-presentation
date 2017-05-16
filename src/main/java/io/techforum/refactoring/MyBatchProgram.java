@@ -1,20 +1,26 @@
 package io.techforum.refactoring;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.List;
 
 public class MyBatchProgram {
+    private String inputFileName;
+    private String outputFileName;
 
+    public MyBatchProgram(String inputFileName, String outputFileName) {
+        this.inputFileName = inputFileName;
+        this.outputFileName = outputFileName;
+    }
+
+    // arguments : numbers.txt target\plainNumbers.txt target\romanNumbers.txt target\englishNumbers.txt
     public static void main(String[] args) {
-        new MyBatchProgram().displayNumbers();
-        new MyBatchProgram().displayRomanNumbers();
-        new MyBatchProgram().displayHumanNumbers();
+        String inputFileName = args[0];
+        new MyBatchProgram(inputFileName, args[1]).displayNumbers();
+        new MyBatchProgram(inputFileName, args[2]).displayRomanNumbers();
+        new MyBatchProgram(inputFileName, args[3]).displayHumanNumbers();
     }
 
 
@@ -23,14 +29,18 @@ public class MyBatchProgram {
      */
     public void displayNumbers() {
         try {
-            File f = new File("src/main/resources/numbers.txt");
+            File f = new File(inputFileName);
             BufferedReader bfr = new BufferedReader(new FileReader(f));
+            BufferedWriter writer = Files.newBufferedWriter(Paths.get(outputFileName));
             String line = bfr.readLine();
-            while(line != null) {
+            while (line != null) {
                 System.out.println(line);
+                writer.append(line);
+                writer.append(System.lineSeparator());
                 line = bfr.readLine();
             }
-        } catch(IOException e) {
+            writer.flush();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -41,11 +51,16 @@ public class MyBatchProgram {
      */
     public void displayHumanNumbers() {
         try {
-             List<String> lines = Files.readAllLines(Paths.get("src/main/resources/numbers.txt"));
-            for( String line : lines) {
-                System.out.println(EnglishNumberToWords.convert(Integer.parseInt(line)));
+            List<String> lines = Files.readAllLines(Paths.get(inputFileName));
+            BufferedWriter writer = Files.newBufferedWriter(Paths.get(outputFileName));
+            for (String line : lines) {
+                String converted = EnglishNumberToWords.convert(Integer.parseInt(line));
+                System.out.println(converted);
+                writer.append(converted);
+                writer.append(System.lineSeparator());
             }
-        } catch(IOException e) {
+            writer.flush();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -56,11 +71,16 @@ public class MyBatchProgram {
      */
     public void displayRomanNumbers() {
         try {
-             List<String> lines = Files.readAllLines(Paths.get("src/main/resources/numbers.txt"));
-            for( String line : lines) {
-                System.out.println(toRomanNumeral(Integer.parseInt(line)));
+            List<String> lines = Files.readAllLines(Paths.get(inputFileName));
+            BufferedWriter writer = Files.newBufferedWriter(Paths.get(outputFileName));
+            for (String line : lines) {
+                String romanNumeral = toRomanNumeral(Integer.parseInt(line));
+                System.out.println(romanNumeral);
+                writer.append(romanNumeral);
+                writer.append(System.lineSeparator());
             }
-        } catch(IOException e) {
+            writer.flush();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -72,20 +92,20 @@ public class MyBatchProgram {
     public static String toRomanNumeral(int i) {
         String toReturn = baseNumber(i);
 
-        if(toReturn == null) {
-            if(i >= 100) {
+        if (toReturn == null) {
+            if (i >= 100) {
                 return "C" + toRomanNumeral(i - 100);
             }
-            if(i >= 90) {
+            if (i >= 90) {
                 return "XC" + toRomanNumeral(i - 90);
             }
-            if(i >= 50) {
+            if (i >= 50) {
                 return "L" + toRomanNumeral(i - 50);
             }
             int nbTens = i / 10;
-            if(nbTens > 0 && nbTens < 4) {
+            if (nbTens > 0 && nbTens < 4) {
                 return repeat("X", nbTens) + baseNumber(i % 10);
-            } else if(nbTens == 4) {
+            } else if (nbTens == 4) {
                 return "XL" + baseNumber(i % 10);
             }
         }
@@ -95,16 +115,16 @@ public class MyBatchProgram {
 
 
     public static String baseNumber(int i) {
-        if(i == 4) {
+        if (i == 4) {
             return "IV";
         }
-        if(i < 4) {
+        if (i < 4) {
             return repeat("I", i);
         }
-        if(i > 4 && i < 9) {
+        if (i > 4 && i < 9) {
             return "V" + repeat("I", i - 5);
         }
-        if(i == 9) {
+        if (i == 9) {
             return "IX";
         }
         return null;
@@ -114,7 +134,7 @@ public class MyBatchProgram {
     public static String repeat(String s, int i) {
         //return String.join("", Collections.nCopies(i, s));
         String result = "";
-        for(int j = 0; j < i; j++) {
+        for (int j = 0; j < i; j++) {
             result += s;
         }
         return result;
@@ -174,7 +194,7 @@ class EnglishNumberToWords {
     private static String convertLessThanOneThousand(int number) {
         String soFar;
 
-        if(number % 100 < 20) {
+        if (number % 100 < 20) {
             soFar = numNames[number % 100];
             number /= 100;
         } else {
@@ -184,7 +204,7 @@ class EnglishNumberToWords {
             soFar = tensNames[number % 10] + soFar;
             number /= 10;
         }
-        if(number == 0) {
+        if (number == 0) {
             return soFar;
         }
         return numNames[number] + " hundred" + soFar;
@@ -193,7 +213,7 @@ class EnglishNumberToWords {
 
     public static String convert(long number) {
         // 0 to 999 999 999 999
-        if(number == 0) {
+        if (number == 0) {
             return "zero";
         }
 
@@ -214,37 +234,37 @@ class EnglishNumberToWords {
         int thousands = Integer.parseInt(snumber.substring(9, 12));
 
         String tradBillions;
-        switch(billions) {
+        switch (billions) {
             case 0:
                 tradBillions = "";
                 break;
             case 1:
                 tradBillions = convertLessThanOneThousand(billions)
-                               + " billion ";
+                        + " billion ";
                 break;
             default:
                 tradBillions = convertLessThanOneThousand(billions)
-                               + " billion ";
+                        + " billion ";
         }
         String result = tradBillions;
 
         String tradMillions;
-        switch(millions) {
+        switch (millions) {
             case 0:
                 tradMillions = "";
                 break;
             case 1:
                 tradMillions = convertLessThanOneThousand(millions)
-                               + " million ";
+                        + " million ";
                 break;
             default:
                 tradMillions = convertLessThanOneThousand(millions)
-                               + " million ";
+                        + " million ";
         }
         result = result + tradMillions;
 
         String tradHundredThousands;
-        switch(hundredThousands) {
+        switch (hundredThousands) {
             case 0:
                 tradHundredThousands = "";
                 break;
@@ -253,7 +273,7 @@ class EnglishNumberToWords {
                 break;
             default:
                 tradHundredThousands = convertLessThanOneThousand(hundredThousands)
-                                       + " thousand ";
+                        + " thousand ";
         }
         result = result + tradHundredThousands;
 
@@ -263,6 +283,6 @@ class EnglishNumberToWords {
 
         // remove extra spaces!
         return result.replaceAll("^\\s+", "")
-                     .replaceAll("\\b\\s{2,}\\b", " ");
+                .replaceAll("\\b\\s{2,}\\b", " ");
     }
 }
