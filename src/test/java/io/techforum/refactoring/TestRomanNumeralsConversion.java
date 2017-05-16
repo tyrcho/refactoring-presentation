@@ -28,7 +28,7 @@ public class TestRomanNumeralsConversion {
 
 
     private void check(int number, String expected) {
-        String actual = MyBatchProgram.toRomanNumeral(number);
+        String actual = RomanNumeralConverter.toRomanNumeral(number);
         assertEquals(expected, actual);
     }
 }
