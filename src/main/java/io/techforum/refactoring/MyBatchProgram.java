@@ -41,8 +41,8 @@ public class MyBatchProgram {
      */
     public void displayHumanNumbers() {
         try {
-            final List<String> lines = Files.readAllLines(Paths.get("src/main/resources/numbers.txt"));
-            for(final String line : lines) {
+             List<String> lines = Files.readAllLines(Paths.get("src/main/resources/numbers.txt"));
+            for( String line : lines) {
                 System.out.println(EnglishNumberToWords.convert(Integer.parseInt(line)));
             }
         } catch(IOException e) {
@@ -56,8 +56,8 @@ public class MyBatchProgram {
      */
     public void displayRomanNumbers() {
         try {
-            final List<String> lines = Files.readAllLines(Paths.get("src/main/resources/numbers.txt"));
-            for(final String line : lines) {
+             List<String> lines = Files.readAllLines(Paths.get("src/main/resources/numbers.txt"));
+            for( String line : lines) {
                 System.out.println(toRomanNumeral(Integer.parseInt(line)));
             }
         } catch(IOException e) {
