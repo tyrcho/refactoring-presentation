@@ -1,0 +1,3 @@
+- [PDF exports of all slides](https://gitlab.kazan.atosworldline.com/antoine/techforum-refactoring/builds/artifacts/master/browse?job=pdf) to download or print
+- [before](https://gitlab.kazan.atosworldline.com/antoine/techforum-refactoring/tree/before) branch
+- [after](https://gitlab.kazan.atosworldline.com/antoine/techforum-refactoring/tree/after) branch
