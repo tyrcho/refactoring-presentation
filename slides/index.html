@@ -10,16 +10,18 @@
     layout:true
     class: center, middle
     ---
-    class: inverse
+    #50 Shades of Refactoring
 
-    #50 Shades of Refactoring.
+    > Refactoring is the process of changing a software system in such a way that it does not alter the external behavior of the code yet improves its internal structure.
+
+    .author[\- [ Martin Fowler in Refactoring: Improving The Design Of Existing Code ] -]
 
     ---
 
     .left-column[
       ![](images/michel.png)
       #Michel Daviot
-      [![](images/mail.png)](mailto:michel.daviot@worldline.com) [![](images/github.png)](https://github.com/tyrcho) [![](images/twitter.png)](https://twitter.com/Michel_Daviot)
+      [![](images/mail.png)](mailto:michel.daviot@worldline.com) [![](images/github.png)](https://github.com/tyrcho)
     ]
     .right-column[
       ![](images/antoine.png)
@@ -30,9 +32,10 @@
     ---
 
     > Any fool can write code that a computer can understand.
+
     > Good programmers write code that humans can understand.
 
-    .author[\- [ Martin Fowler about Refactoring. ] -]
+    .author[\- [ Martin Fowler in Refactoring: Improving The Design Of Existing Code ] -]
 
     ---
     class: inverse
@@ -44,48 +47,83 @@
     ![](images/program.png)
 
     ---
-    class: inverse
 
-    #Summary/Reminder.
+    ![](images/safety-net.jpg)
+
+    ---
+
+    ![:scale 90%](images/baby-steps.jpg)
+
+    ---
+
+    ![:scale 90%](images/tools.jpg)
+
+    ---
+
+    ![:scale 70%](images/roi.jpg)
+
+    ---
+
+    ![:scale 90%](images/quicksands.jpg)
+
+    ---
+
+    ![:scale 60%](images/review.jpg)
+
+    ---
+
+    layout:false
+
+    ```java
+    private static final char[] ones = {'I', 'X', 'C', 'M'};
+    private static final char[] fives = {'V', 'L', 'D'};
+
+    public static String toRoman(int n) {
+        return convertRec(n, 'M', ones.length - 1, 1000);
+    }
+
+    private static String convertRec(int n, char nextUnit, int i, int ratio) {
+        int num = n / ratio;
+        String converted = num < 4 ? repeat(ones[i], num)
+                : num == 4 ? ones[i] + "" + fives[i]
+                : num == 9 ? ones[i] + "" + nextUnit
+                : fives[i] + repeat(ones[i], num % 5);
+        return i > 0
+                ? converted + convertRec(n % ratio, ones[i], i - 1, ratio / 10)
+                : converted;
+    }
+
+    static String repeat(char c, int n) {
+        return new String(new char[n]).replace('\0', c);
+    }
+    ```
 
     ---
     class: inverse
 
-    #How should I refactor?
+    #Summary - How should I refactor?
+
+    ##1. Safely. With tests.
+
+    ##2. Iteratively. With baby steps.
+
+    ##3. Assisted. With tools.
+
+    ##4. Wisely. With moderation and priorities.
+
+    ##5. Shared. With pair and reviews.
+
+    ##Beware of refucktoring.
 
     ---
-
-    #1. Safely. With tests.
-
-    ---
-
-    #2. Iteratively. With baby steps.
-
-    ---
-
-    #3. Assisted. With tools.
-
-    ---
-
-    #4. Wisely. With moderation and priorities.
-
-    ---
-
-    #5. Shared. With pair and reviews.
-
-    ---
-    class: inverse
-
-    #Beware of refucktoring.
-
-    ---
+    class: center,middle
 
     > DRY - KISS - YAGNI - DRTW - blablabla
 
     .author[\- [ Lots of people you found boring at some point. ] -]
 
     ---
-    class: inverse
+    class: inverse,center,middle
 
     #Questions?
 
@@ -139,9 +177,9 @@
 
   var slideshow = remark.create({
       ratio: '16:9',
-      highlightStyle: 'monokai',
-      highlightLanguage: 'remark',
-      highlightLines: true,
+      highlightStyle: 'github',
+      highlightLanguage: 'java',
+      highlightLines: false,
       slideNumberFormat: ''
   }) ;
 </script>
