@@ -1,18 +1,18 @@
 pdf:
-  image: centos:7
+  image: registry.kazan.atosworldline.com/docker-reg/awl-centos7:latest
   stage: deploy
   script:
   - export PROXY=proxy-prod.priv.atos.fr:3128
   - echo "proxy=http://$PROXY" >> /etc/yum.conf
   - yum install -y freetype fontconfig
   - mkdir pdf
-  - curl -L https://github.com/astefanutti/decktape/archive/v1.0.0.tar.gz | tar -xz --exclude phantomjs
+  - curl -L --proxy http://$PROXY https://github.com/astefanutti/decktape/archive/v1.0.0.tar.gz | tar -xz --exclude phantomjs
   - cd decktape-1.0.0
-  - curl -L https://github.com/astefanutti/decktape/releases/download/v1.0.0/phantomjs-linux-x86-64 -o phantomjs
+  - curl -L --proxy http://$PROXY https://github.com/astefanutti/decktape/releases/download/v1.0.0/phantomjs-linux-x86-64 -o phantomjs
   - chmod +x phantomjs
   - for f in `cd ../slides; ls *.html` ; do ./phantomjs --proxy=$PROXY decktape.js remark ../slides/$f ../pdf/$f.pdf ; done
   artifacts:
     paths:
     - pdf
   only:
-  - master  
+  - master
