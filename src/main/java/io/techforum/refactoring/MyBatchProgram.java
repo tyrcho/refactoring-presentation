@@ -11,10 +11,17 @@ import java.util.List;
 
 public class MyBatchProgram {
 
+    private String filePath;
+
+    public MyBatchProgram(String path) {
+        this.filePath = path;
+    }
+
     public static void main(String[] args) {
-        new MyBatchProgram().displayNumbers();
-        new MyBatchProgram().displayRomanNumbers();
-        new MyBatchProgram().displayHumanNumbers();
+        final MyBatchProgram program = new MyBatchProgram(args[0]);
+        program.displayNumbers();
+        program.displayRomanNumbers();
+        program.displayHumanNumbers();
     }
 
 
@@ -23,7 +30,7 @@ public class MyBatchProgram {
      */
     public void displayNumbers() {
         try {
-            File f = new File("src/main/resources/numbers.txt");
+            File f = new File(this.filePath);
             BufferedReader bfr = new BufferedReader(new FileReader(f));
             String line = bfr.readLine();
             while(line != null) {
@@ -41,7 +48,7 @@ public class MyBatchProgram {
      */
     public void displayHumanNumbers() {
         try {
-            final List<String> lines = Files.readAllLines(Paths.get("src/main/resources/numbers.txt"));
+            final List<String> lines = Files.readAllLines(Paths.get(this.filePath));
             for(final String line : lines) {
                 System.out.println(EnglishNumberToWords.convert(Integer.parseInt(line)));
             }
@@ -56,7 +63,7 @@ public class MyBatchProgram {
      */
     public void displayRomanNumbers() {
         try {
-            final List<String> lines = Files.readAllLines(Paths.get("src/main/resources/numbers.txt"));
+            final List<String> lines = Files.readAllLines(Paths.get(this.filePath));
             for(final String line : lines) {
                 System.out.println(toRomanNumeral(Integer.parseInt(line)));
             }
