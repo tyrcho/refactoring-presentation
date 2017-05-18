@@ -40,40 +40,61 @@
     ---
     class: inverse
 
-    #Live Refactoring!
+    #Storyline.
 
     ---
 
-    ![](images/program.png)
+    ![:scale 70%](images/program.png)
+
+    ---
+
+    #Refactoring to identify the bug easily
+
+    --
+
+    #Fix the bug with Roman Converter
+
+    --
+
+    #Refactoring 'cause we're boyscouts!
+
+    ---
+
+    ![](images/java.png) ![](images/idea.png)
+
+    ![:scale 40%](images/junit.png)
+
+    ![:scale 20%](images/infinitest.png)
 
     ---
     class: inverse
 
-    #Summary: how to?
+    #Let's Code!
+
+    ---
+    class: inverse
+
+    #Summary?
 
     ---
 
-    ![](images/safety.jpg)
+    ![](images/safety.gif)
 
     ---
 
-    ![](images/baby.gif)
+    ![:scale 50%](images/baby.jpg)
 
     ---
 
-    ![:scale 40%](images/tools.jpg)
+    ![:scale 50%](images/tools.jpg)
 
     ---
 
-    ![:scale 40%](images/roi.jpg)
+    ![:scale 50%](images/roi.png)
 
     ---
 
-    ![:scale 40%](images/refucktoring.jpg)
-
-    ---
-
-    ![](images/readability.jpg)
+    ![:scale 50%](images/readability.jpg)
 
     ---
     layout:true
@@ -105,6 +126,46 @@
     ```
 
     ---
+
+    ```java
+        private final static TreeMap<Integer, String> map = new TreeMap<>();
+        static {
+            map.put(1000, "M");
+            map.put(900, "CM");
+            map.put(500, "D");
+            map.put(400, "CD");
+            map.put(100, "C");
+            map.put(90, "XC");
+            map.put(50, "L");
+            map.put(40, "XL");
+            map.put(10, "X");
+            map.put(9, "IX");
+            map.put(5, "V");
+            map.put(4, "IV");
+            map.put(1, "I");
+        }
+
+        public String convert(Integer number) {
+            int l = map.floorKey(number);
+            if(number == l) {
+                return map.get(number);
+            }
+            return map.get(l) + convert(number - l);
+        }
+    ```
+
+    ---
+    layout:true
+    class: middle, center
+    ---
+
+    ![](images/quicksand.jpeg)
+
+    ---
+
+    ![:scale 50%](images/refucktoring.jpg)
+
+    ---
     class: inverse
 
     #Summary of the summary?
@@ -134,6 +195,7 @@
     #Questions?
 
     ---
+    layout: false
 
     # 50 shades ? Phase 1 : roman numerals
 
