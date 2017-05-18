@@ -10,16 +10,18 @@
     layout:true
     class: center, middle
     ---
-    class: inverse
+    #50 Shades of Refactoring
 
-    #50 Shades of Refactoring.
+    > Refactoring is the process of changing a software system in such a way that it does not alter the external behavior of the code yet improves its internal structure.
+
+    .author[\- [ Martin Fowler in Refactoring: Improving The Design Of Existing Code ] -]
 
     ---
 
     .left-column[
       ![](images/michel.png)
       #Michel Daviot
-      [![](images/mail.png)](mailto:michel.daviot@worldline.com) [![](images/github.png)](https://github.com/tyrcho) [![](images/twitter.png)](https://twitter.com/Michel_Daviot)
+      [![](images/mail.png)](mailto:michel.daviot@worldline.com) [![](images/github.png)](https://github.com/tyrcho)
     ]
     .right-column[
       ![](images/antoine.png)
@@ -30,65 +32,221 @@
     ---
 
     > Any fool can write code that a computer can understand.
+
     > Good programmers write code that humans can understand.
 
-    .author[\- [ Martin Fowler about Refactoring. ] -]
+    .author[\- [ Martin Fowler in Refactoring: Improving The Design Of Existing Code ] -]
 
     ---
     class: inverse
 
-    #Live Refactoring!
+    #Storyline.
 
     ---
 
-    ![](images/program.png)
-
-    ---
-    class: inverse
-
-    #Summary/Reminder.
-
-    ---
-    class: inverse
-
-    #How should I refactor?
+    ![:scale 70%](images/program.png)
 
     ---
 
-    #1. Safely. With tests.
+    #Refactoring to identify the bug easily
+
+    --
+
+    #Fix the bug with Roman Converter
+
+    --
+
+    #Refactoring 'cause we're boyscouts!
 
     ---
 
-    #2. Iteratively. With baby steps.
+    ![](images/java.png) ![](images/idea.png)
 
-    ---
+    ![:scale 40%](images/junit.png)
 
-    #3. Assisted. With tools.
-
-    ---
-
-    #4. Wisely. With moderation and priorities.
-
-    ---
-
-    #5. Shared. With pair and reviews.
+    ![:scale 20%](images/infinitest.png)
 
     ---
     class: inverse
 
-    #Beware of refucktoring.
+    #Let's Code!
 
     ---
+    class: inverse
+
+    #Summary?
+
+    ---
+
+    ![](images/safety.gif)
+
+    ---
+
+    ![:scale 50%](images/baby.jpg)
+
+    ---
+
+    ![:scale 50%](images/tools.jpg)
+
+    ---
+
+    ![:scale 50%](images/roi.png)
+
+    ---
+
+    ![:scale 50%](images/readability.jpg)
+
+    ---
+    layout:true
+    class: middle
+    ---
+
+    ```java
+    private static final char[] ones = {'I', 'X', 'C', 'M'};
+    private static final char[] fives = {'V', 'L', 'D'};
+
+    public static String toRoman(int n) {
+        return convertRec(n, 'M', ones.length - 1, 1000);
+    }
+
+    private static String convertRec(int n, char nextUnit, int i, int ratio) {
+        int num = n / ratio;
+        String converted = num < 4 ? repeat(ones[i], num)
+                : num == 4 ? ones[i] + "" + fives[i]
+                : num == 9 ? ones[i] + "" + nextUnit
+                : fives[i] + repeat(ones[i], num % 5);
+        return i > 0
+                ? converted + convertRec(n % ratio, ones[i], i - 1, ratio / 10)
+                : converted;
+    }
+
+    static String repeat(char c, int n) {
+        return new String(new char[n]).replace('\0', c);
+    }
+    ```
+
+    ---
+
+    ```java
+        private final static TreeMap<Integer, String> map = new TreeMap<>();
+        static {
+            map.put(1000, "M");
+            map.put(900, "CM");
+            map.put(500, "D");
+            map.put(400, "CD");
+            map.put(100, "C");
+            map.put(90, "XC");
+            map.put(50, "L");
+            map.put(40, "XL");
+            map.put(10, "X");
+            map.put(9, "IX");
+            map.put(5, "V");
+            map.put(4, "IV");
+            map.put(1, "I");
+        }
+
+        public String convert(Integer number) {
+            int l = map.floorKey(number);
+            if(number == l) {
+                return map.get(number);
+            }
+            return map.get(l) + convert(number - l);
+        }
+    ```
+
+    ---
+    layout:true
+    class: middle, center
+    ---
+
+    ![](images/quicksand.jpeg)
+
+    ---
+
+    ![:scale 50%](images/refucktoring.jpg)
+
+    ---
+    class: inverse
+
+    #Summary of the summary?
+
+    ##1. Safely. With tests.
+
+    ##2. Iteratively. With baby steps.
+
+    ##3. Assisted. With tools.
+
+    ##4. Wisely. With moderation and priorities.
+
+    ##5. Shared. With pair and reviews.
+
+    ##Beware of refucktoring.
+
+    ---
+    class: center,middle
 
     > DRY - KISS - YAGNI - DRTW - blablabla
 
     .author[\- [ Lots of people you found boring at some point. ] -]
 
     ---
-    class: inverse
+    class: inverse,center,middle
 
     #Questions?
 
+    ---
+    layout: false
+
+    # 50 shades ? Phase 1 : roman numerals
+
+    1. explain unit test, Infinitest
+    1. baseNumber => convertUnits
+    1. extract convertTens
+    1. return directly convertTens in convertRoman
+    1. replace null with ""
+    1. replace call to convertRoman => convertUnits
+    1. replace by i % 10
+    1. pull up calls to convertUnits(i % 10)
+    1. duplicate convertUnits => convertGeneric, add arguments
+    1. convertUnits calls convertGeneric
+    1. duplicate convertUnits to convertTens2
+    1. try to call convertTens2(i)
+    1. try to call convertTens2(i/10)
+    1. remove convertTens
+    1. rename convertTens2
+    1. remove noise in convertRoman
+    1. check that test still fails for 456
+    1. return to stable state
+    1. write convertHundreds as convertGeneric(i, "C", "L", "M");
+    1. return convertHundreds(i / 100) + toRomanNumeral(i % 100)
+    1. uncomment tests
+    1. fix bug L => D
+
+    ---
+
+    # 50 shades ? Phase 2 : Batch
+
+    1. uncomment test for batch
+    1. move class EnglishNumbers
+    1. move members (alt-7, F6) to io.techforum.refactoring.RomanConverter
+    1. hide private members
+    1. rename to NumbersConversionBatch
+    1. detect that 3 displayXXXmethods are not DRY
+    1. public interface Converter {       String convert(int number);   }
+    1. duplicate displayRomanNumbers => convertAndWriteNumbers(Converter converter)
+    1. displayRomanNumbers calls it with anonymous impl
+    1. IDE : replace with lambda
+    1. displayHumanNumbers : duplicate of lambda
+    1. displayNumbers : idem number + ""
+    1. change signature to convertAndWriteNumbers(Function<Integer, String> converter)
+    1. remove interface Converter
+    1. inline the 3 methods display ... (badly named)
+    1. replace lambda with method reference x2
+    1. could now continue with better exception handling
+
+    ---
+    layout: true
+    class: center, middle
     ---
     class: inverse
 
@@ -139,9 +297,9 @@
 
   var slideshow = remark.create({
       ratio: '16:9',
-      highlightStyle: 'monokai',
-      highlightLanguage: 'remark',
-      highlightLines: true,
+      highlightStyle: 'github',
+      highlightLanguage: 'java',
+      highlightLines: false,
       slideNumberFormat: ''
   }) ;
 </script>
