@@ -1,36 +1,57 @@
 package io.techforum.refactoring;
 
 
-import org.junit.Test;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.junit.Assert.assertEquals;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 public class TestBatchOutputResult {
 
+    @BeforeClass
+    public static void setUp() {
+        MyBatchProgram.main(numbers_file, "plain_test.txt", "roman_test.txt", "english_test.txt");
+    }
+
+
     @Test
-    public void testOkOutput() throws IOException {
-        MyBatchProgram.main("numbers.txt target\\plainNumbers.txt target\\romanNumbers.txt target\\englishNumbers.txt".split(" "));
-
-        compare("plainNumbersOk.txt", "plainNumbers.txt");
-//        compare("romanNumbersOk.txt", "romanNumbers.txt");
-        compare("englishNumbersOk.txt", "englishNumbers.txt");
+    public void testPlainConversion() {
+        check("plain_test.txt", plain_file);
     }
 
-    private List<String> readLines(String fileName) throws IOException {
-        return Files.lines(Paths.get(fileName)).collect(Collectors.toList());
+
+    @Test // @Ignore
+    public void testRomanConversion() {
+        check("roman_test.txt", roman_file);
     }
 
-    private void compare(String expectedFileName, String actualFileName) throws IOException {
-        assertEquals("error in " + actualFileName,
-                readLines("src/test/resources/" + expectedFileName),
-                readLines("target/" + actualFileName));
+
+    @Test
+    public void testEnglishConversion() {
+        check("english_test.txt", english_file);
     }
 
+
+    private void check(String file, String expected) {
+        try {
+            assertThat(Files.readAllLines(Paths.get(file))).isEqualTo(Files.readAllLines(Paths.get(expected)));
+        } catch(IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+
+    private static final String numbers_file = TestBatchOutputResult.class.getResource("/numbers.txt")
+                                                                          .getFile();
+    private static final String english_file = TestBatchOutputResult.class.getResource("/english_ok.txt")
+                                                                          .getFile();
+    private static final String plain_file = TestBatchOutputResult.class.getResource("/plain_ok.txt")
+                                                                        .getFile();
+    private static final String roman_file = TestBatchOutputResult.class.getResource("/roman_ok.txt")
+                                                                        .getFile();
 
 }
