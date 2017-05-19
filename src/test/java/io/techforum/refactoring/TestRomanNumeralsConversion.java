@@ -2,6 +2,7 @@ package io.techforum.refactoring;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class TestRomanNumeralsConversion {
@@ -42,7 +43,8 @@ public class TestRomanNumeralsConversion {
     }
 
 
-    @Test // @Ignore
+    @Test
+    @Ignore
     public void testRomanHundredsGreaterThan400Conversion() {
         check(400, "CD");
         check(456, "CDLVI");
