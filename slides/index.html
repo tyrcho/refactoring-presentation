@@ -47,25 +47,14 @@
     ![:scale 70%](images/program.png)
 
     ---
-    layout:false
 
-    #Refactoring to identify the bug easily
+    #Our Goals
 
-    --
+    ##1. Refactoring to identify the bug easily
 
-    #Fix the bug with Roman Converter
+    ##2. Fix the bug with Roman Converter
 
-    --
-
-    #Refactoring 'cause we're boyscouts!
-
-    ???
-
-    ![](images/java.png) ![](images/idea.png)
-
-    ![:scale 40%](images/junit.png)
-
-    ![:scale 20%](images/infinitest.png)
+    ##3. Refactoring 'cause we're boyscouts!
 
     ---
     class: inverse
@@ -97,11 +86,15 @@
 
     # IDE refactoring
 
-    * Move / Rename (`F6` / `Shift-F6`)
-    * Extract variable / method (`Ctrl-Alt-V` / `Ctrl-Alt-M`)
-    * Inline (`Ctrl-Alt-N`)
-    * Intentions (`Alt-Enter`)
-    * Refactoring menu (`Ctrl-Alt-Shift-T`)
+    Move / Rename (`F6` / `Shift-F6`)
+
+    Extract variable / method (`Ctrl-Alt-V` / `Ctrl-Alt-M`)
+
+    Inline (`Ctrl-Alt-N`)
+
+    Intentions (`Alt-Enter`)
+
+    Refactoring menu (`Ctrl-Alt-Shift-T`)
 
     ---
 
@@ -170,15 +163,67 @@
     class: middle, center
     ---
 
-    ![:scale 50%](images/readability.jpg)
+    ![:scale 50%](images/pair.jpg)
 
     ---
-    class: center,middle
 
-    > DRY - KISS (YAGNI) - DRTW - blablabla
+    > DRY - KISS (YAGNI) - DRTW - ...
 
     .author[\- [ Lots of people you found boring at some point. ] -]
 
+    ---
+    layout: true
+    class: middle
+    ---
+
+    #Don't Repeat Yourself
+
+    ```java
+    public void convertAndWriteNumbers(Function<Integer, String> converter) {
+        try(BufferedWriter writer = Files.newBufferedWriter(Paths.get(outputFileName))) {
+            List<Integer> numbers = Files.lines(Paths.get(inputFileName))
+                                         .map(s -> Integer.parseInt(s))
+                                         .collect(Collectors.toList());
+            for(Integer number : numbers) {
+                String converted = converter.apply(number);
+                System.out.println(converted);
+                writer.append(converted)
+                      .append(System.lineSeparator());
+            }
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+    ```
+
+    ---
+
+    #Keep It Simple, Stupid
+
+    ```java
+    public static String toRomanNumeral(int i) {
+        if(i >= 100) return convertHundreds(i/100) + toRomanNumeral (i % 100);
+        if(i >= 10) return convertTens(i/10) + toRomanNumeral(i % 10);
+        return convertUnits(i);
+    }
+    ```
+
+    ---
+
+    #Don't Reinvent The Wheel
+
+    ```java
+    /**
+     * Proud copy pasting of https://stackoverflow.com/questions/3911966/how-to-convert-number-to-words-in-java
+     * without even reading the code.
+     * Cause why not.
+     */
+    class EnglishNumberToWords {
+    ```
+
+    ---
+    layout: true
+    class: middle, center
     ---
     class: inverse
 
