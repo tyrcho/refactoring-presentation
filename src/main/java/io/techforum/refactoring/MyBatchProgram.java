@@ -8,14 +8,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MyBatchProgram
-{
+public class MyBatchProgram {
     private String inputFileName;
     private String outputFileName;
 
 
-    public MyBatchProgram(String inputFileName, String outputFileName)
-    {
+    public MyBatchProgram(String inputFileName, String outputFileName) {
         this.inputFileName = inputFileName;
         this.outputFileName = outputFileName;
     }
@@ -23,8 +21,7 @@ public class MyBatchProgram
 
     // run with arguments :
     // numbers.txt target/plain.txt target/roman.txt target/english.txt
-    public static void main(String... args)
-    {
+    public static void main(String... args) {
         String inputFileName = args[0];
         String outPlain = args[1];
         String outEnglish = args[3];
@@ -44,8 +41,7 @@ public class MyBatchProgram
     /**
      * For displaying the numbers in the file...
      */
-    public void displayNumbers()
-    {
+    public void displayNumbers() {
         try {
             File f = new File(inputFileName);
             BufferedReader bfr = new BufferedReader(new FileReader(f));
@@ -69,8 +65,7 @@ public class MyBatchProgram
     /**
      * For displaying the numbers in the file as words...
      */
-    public void displayHumanNumbers()
-    {
+    public void displayHumanNumbers() {
         try {
             // read file : java 7 NIO
             List<String> lines = Files.readAllLines(Paths.get(inputFileName));
@@ -92,8 +87,7 @@ public class MyBatchProgram
     /**
      * For displaying the numbers in the file as roman numbers...
      */
-    public void displayRomanNumbers()
-    {
+    public void displayRomanNumbers() {
         // try with resource
         try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(outputFileName))) {
             // read file : Java8 stream
@@ -116,8 +110,7 @@ public class MyBatchProgram
     /**
      * Conversion to a roman numeral...
      */
-    public static String toRomanNumeral(int i)
-    {
+    public static String toRomanNumeral(int i) {
         String toReturn = baseNumber(i);
 
         if (toReturn == null) {
@@ -152,8 +145,7 @@ public class MyBatchProgram
      * @param i
      * @return
      */
-    public static String baseNumber(int i)
-    {
+    public static String baseNumber(int i) {
         if (i == 4) {
             return "IV";
         }
@@ -170,8 +162,7 @@ public class MyBatchProgram
     }
 
 
-    public static String repeat(String s, int i)
-    {
+    public static String repeat(String s, int i) {
         return String.join("", Collections.nCopies(i, s));
     }
 
@@ -183,8 +174,7 @@ public class MyBatchProgram
  * without even reading the code.
  * Cause why not.
  */
-class EnglishNumberToWords
-{
+class EnglishNumberToWords {
 
     private static final String[] tensNames = {
             "",
@@ -223,13 +213,11 @@ class EnglishNumberToWords
     };
 
 
-    private EnglishNumberToWords()
-    {
+    private EnglishNumberToWords() {
     }
 
 
-    private static String convertLessThanOneThousand(int number)
-    {
+    private static String convertLessThanOneThousand(int number) {
         String soFar;
 
         if (number % 100 < 20) {
@@ -249,8 +237,7 @@ class EnglishNumberToWords
     }
 
 
-    public static String convert(long number)
-    {
+    public static String convert(long number) {
         // 0 to 999 999 999 999
         if (number == 0) {
             return "zero";
