@@ -3,7 +3,6 @@ package io.techforum.refactoring;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.net.URISyntaxException;
@@ -47,7 +46,6 @@ public class TestBatchOutputResult {
     }
 
     @Test
-    @Ignore
     public void testRomanConversion() throws Exception {
         check(ROMAN_OUTPUT_TXT, "out/roman_ok.txt");
     }
