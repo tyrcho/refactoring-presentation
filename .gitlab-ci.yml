@@ -1,9 +1,6 @@
 pdf:
-  image: registry.kazan.atosworldline.com/docker-reg/awl-centos7:latest
   stage: deploy
   script:
-  - export PROXY=proxy-prod.priv.atos.fr:3128
-  - echo "proxy=http://$PROXY" >> /etc/yum.conf
   - yum install -y freetype fontconfig
   - mkdir pdf
   - curl -L --proxy http://$PROXY https://github.com/astefanutti/decktape/archive/v1.0.0.tar.gz | tar -xz --exclude phantomjs
